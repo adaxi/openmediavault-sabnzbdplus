@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# @license   http://www.gnu.org/licenses/gpl.html GPL Version 2
+# @author    Gerik Bonaert <dev@adaxisoft.be>
+# @copyright Copyright (c) 2013 Gerik Bonaert
+#
+# Sabnzbdplus for OpenMediaVault is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# any later version.
+#
+# OpenMediaVault is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
+
+# Documentation/Howto:
+# http://wiki.dreamhost.com/index.php/Crontab
+
+set -e
+
+. /etc/default/openmediavault
+. /usr/share/openmediavault/scripts/helper-functions
+
+OMV_SICKBEARD_RUN_AS=${OMV_SICKBEARD_RUN_AS:-"essencia"}
+OMV_SICKBEARD_PORT=${OMV_SICKBEARD_PORT:-"8081"}
+OMV_SICKBEARD_INSTALL_DIR=${OMV_SICKBEARD_INSTALL_DIR:-"/usr/share/sabnzbdplus"}
+OMV_SICKBEARD_CONFIG_DIR=${OMV_SICKBEARD_CONFIG_DIR:-"/etc/sabnzbdplus"}
+OMV_SICKBEARD_CONFIG_FILE=${OMV_SICKBEARD_CONFIG_FILE:-"${OMV_SICKBEARD_CONFIG_DIR}/config.ini"}
+OMV_SICKBEARD_DATA_DIR=${OMV_SICKBEARD_DATA_DIR:-"/var/lib/sabnzbdplus"}
+OMV_SICKBEARD_LOG_DIR=${OMV_SICKBEARD_LOG_DIR:-"/var/log/sabnzbdplus"}
+OMV_SICKBEARD_DEFAULT_FILE=${OMV_SICKBEARD_DEFAULT_FILE:-"/etc/default/sabnzbdplus"}
+OMV_SICKBEARD_WEB_ROOT=${OMV_SICKBEARD_WEB_ROOT:-"/sabnzbdplus"}
+OMV_SICKBEARD_AUTOPROCESS_FILE=${OMV_SICKBEARD_AUTOPROCESS_FILE:-"/usr/share/sabnzbdplus/autoProcessTV/autoProcessTV.cfg"}
+
+for file in ${OMV_SICKBEARD_INSTALL_DIR} ${OMV_SICKBEARD_CONFIG_DIR} ${OMV_SICKBEARD_DATA_DIR} ${OMV_SICKBEARD_LOG_DIR}; do
+	mkdir -p $file;
+done
+
+chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_LOG_DIR} 
+
+cat <<EOF > ${OMV_SICKBEARD_DEFAULT_FILE}
+# This file is sourced by /etc/init.d/sabnzbdplus
+#
+# When sabnzbdplus is started using the init script
+# is started under the account of $USER, as set below.
+#
+# Each setting is marked either "required" or "optional";
+# leaving any required setting unconfigured will cause
+# the service to not start.
+
+# [required] set path where sabnzbdplus is installed:
+APP_PATH=${OMV_SICKBEARD_INSTALL_DIR}
+
+# [optional] change to 1 to enable daemon
+ENABLE_DAEMON=1
+
+# [required] user or uid of account to run the program as:
+RUN_AS=${OMV_SICKBEARD_RUN_AS}
+
+# [optional] change to 1 to enable updating from webinterface
+# this changes ownership of /opt/sabnzbdplus to user set @ RUN_AS=
+WEB_UPDATE=1
+
+# [optional] full path to the configuration file of your choice;
+# otherwise, the default location (~/.sabnzbdplus) is used:
+CONFIG=${OMV_SICKBEARD_CONFIG_FILE}
+
+# [optional] full path to the folder to store data (databases/thumbs) in;
+# otherwise, the default location (~/.sabnzbdplus) is used:
+DATADIR=${OMV_SICKBEARD_DATA_DIR}
+
+# [optional] port number to listen on:
+PORT=${OMV_SICKBEARD_PORT}
+
+# [optional] full path for the pidfile
+# otherwise, the default location /var/run/sabnzbdplus/sabnzbdplus.pid is used:
+PID_FILE=
+EOF
+  
+chown ${OMV_SICKBEARD_RUN_AS} ${OMV_SICKBEARD_CONFIG_DIR} -R
+
+chown essencia /etc/sabnzbdplus/config.ini
