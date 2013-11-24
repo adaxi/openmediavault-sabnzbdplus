@@ -25,26 +25,26 @@ set -e
 case "$1" in
 	configure)
 		########################################################################
-		# Set the default settings of the sickbeard package to those expected by
+		# Set the default settings of the sabnzbdplus package to those expected by
 		# OpenMediaVault.
 		########################################################################
 
-		mkdir -p /etc/sickbeard
+		mkdir -p /etc/sabnzbdplus
 
 		########################################################################
 		# Update the configuration.
 		# <config>
 		#   <services>
-		#     <sickbeard>
+		#     <sabnzbdplus>
 		#       <enable>0</enable>
-		#     </sickbeard>
+		#     </sabnzbdplus>
 		#   </services>
 		# </config>
 		########################################################################
-		if ! omv_config_exists "/config/services/sickbeard"; then
+		if ! omv_config_exists "/config/services/sabnzbdplus"; then
 			echo "Initialize configuration"
 			object="<enable>0</enable>"
-			omv_config_add_element "/config/services" "sickbeard" "${object}" true
+			omv_config_add_element "/config/services" "sabnzbdplus" "${object}" true
 		fi
 
 	;;

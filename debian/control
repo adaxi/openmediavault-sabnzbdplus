@@ -10,5 +10,5 @@ Package: openmediavault-sabnzbdplus
 Architecture: all
 Depends: openmediavault (>= 0.5.7), sabnzbdplus
 Priority: optional
-Description: OpenMediaVault Sickbeard plugin
- Sickbeard is a PVR for Unix.
+Description: OpenMediaVault Sabnzbdplus plugin
+ Sabnzbdplus is a newsgroup client.
