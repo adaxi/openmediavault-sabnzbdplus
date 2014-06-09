@@ -24,6 +24,7 @@ OMV.WorkspaceManager.registerNode({
 	path: "/service",
 	text: _("Sabnzbdplus"),
 	icon16: "images/sabnzbdplus.png",
+	iconSvg: "images/sabnzbdplus.svg",
 	position: 40
 });
 

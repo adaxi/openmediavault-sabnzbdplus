@@ -8,7 +8,7 @@ Homepage: http://adaxisoft.be
 
 Package: openmediavault-sabnzbdplus
 Architecture: all
-Depends: openmediavault (>= 0.5.7), sabnzbdplus
+Depends: openmediavault (>= 0.5.7), sabnzbdplus, par2, python-openssl, python-yenc, unrar, unzip
 Priority: optional
 Description: OpenMediaVault Sabnzbdplus plugin
  Sabnzbdplus is a newsgroup client.
