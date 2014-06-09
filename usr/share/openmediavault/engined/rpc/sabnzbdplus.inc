@@ -23,7 +23,6 @@ require_once("openmediavault/config.inc");
 require_once("openmediavault/error.inc");
 require_once("openmediavault/rpcservice.inc");
 require_once("openmediavault/notify.inc");
-require_once("openmediavault/configobj.inc");
 
 class OMVRpcServiceSabnzbdplus extends OMVRpcServiceAbstract {
 	/**
