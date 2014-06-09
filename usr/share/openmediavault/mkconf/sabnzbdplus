@@ -49,14 +49,12 @@ cat <<EOF > ${OMV_SABNZBDPLUS_DEFAULT_FILE}
 # leaving any required setting unconfigured will cause
 # the service to not start.
 
-# [required] set path where sabnzbdplus is installed:
-APP_PATH=${OMV_SABNZBDPLUS_INSTALL_DIR}
 
 # [optional] change to 1 to enable daemon
 ENABLE_DAEMON=1
 
 # [required] user or uid of account to run the program as:
-RUN_AS=${OMV_SABNZBDPLUS_RUN_AS}
+USER=${OMV_SABNZBDPLUS_RUN_AS}
 
 # [optional] change to 1 to enable updating from webinterface
 # this changes ownership of /opt/sabnzbdplus to user set @ RUN_AS=
@@ -66,16 +64,13 @@ WEB_UPDATE=1
 # otherwise, the default location (~/.sabnzbdplus) is used:
 CONFIG=${OMV_SABNZBDPLUS_CONFIG_FILE}
 
-# [optional] full path to the folder to store data (databases/thumbs) in;
-# otherwise, the default location (~/.sabnzbdplus) is used:
-DATADIR=${OMV_SABNZBDPLUS_DATA_DIR}
+# [required] host to listen on:
+HOST=0.0.0.0
 
 # [optional] port number to listen on:
 PORT=${OMV_SABNZBDPLUS_PORT}
 
-# [optional] full path for the pidfile
-# otherwise, the default location /var/run/sabnzbdplus/sabnzbdplus.pid is used:
-PID_FILE=
+
 EOF
 
 
