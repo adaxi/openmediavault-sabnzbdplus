@@ -32,7 +32,7 @@ OMV_SABNZBDPLUS_LOG_DIR=${OMV_SABNZBDPLUS_LOG_DIR:-"/var/log/sabnzbdplus"}
 OMV_SABNZBDPLUS_DEFAULT_FILE=${OMV_SABNZBDPLUS_DEFAULT_FILE:-"/etc/default/sabnzbdplus"}
 OMV_SABNZBDPLUS_WEB_ROOT=${OMV_SABNZBDPLUS_WEB_ROOT:-"/sabnzbdplus"}
 OMV_SABNZBDPLUS_AUTOPROCESS_FILE=${OMV_SABNZBDPLUS_AUTOPROCESS_FILE:-"/usr/share/sabnzbdplus/autoProcessTV/autoProcessTV.cfg"}
-OMV_SABNZBDPLUS_NGINX_SITE=${OMV_SABNZBDPLUS_NGINX_SITE:-"/etc/nginx/sites-available/sabnzbdplus-proxy"}
+OMV_SABNZBDPLUS_NGINX_SITE=${OMV_SABNZBDPLUS_NGINX_SITE:-"/etc/nginx/openmediavault-webgui.d/sabnzbdplus-proxy.conf"}
 
 for DIR in ${OMV_SABNZBDPLUS_CONFIG_DIR} ${OMV_SABNZBDPLUS_LOG_DIR} ${OMV_SABNZBDPLUS_DATA_DIR}; do
     mkdir -p ${DIR}
@@ -79,7 +79,6 @@ location /usenet/ {
 }
 EOF
 
-nginx_ensite sabnzbdplus-proxy
 service nginx reload
 
 
