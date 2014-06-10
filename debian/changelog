@@ -1,10 +1,10 @@
-openmediavault-sabnzbdplus (0.2) unstable; urgency=low
+openmediavault-sabnzbdplus-essencia (0.2) unstable; urgency=low
 
   * Remove references to configobj. 
 
  -- Gerik Bonaert <dev@adaxisoft.be>  Mon, 09 Jun 2014 15:15:28 +0000
 
-openmediavault-sabnzbdplus (0.1) unstable; urgency=low
+openmediavault-sabnzbdplus-essencia (0.1) unstable; urgency=low
 
   * Initial release
 

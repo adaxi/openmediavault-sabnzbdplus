@@ -1,4 +1,4 @@
-Source: openmediavault-sabnzbdplus
+Source: openmediavault-sabnzbdplus-essencia
 Section: net
 Priority: optional
 Maintainer: Gerik Bonaert <dev@adaxisoft.be>
@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 7), gettext
 Standards-Version: 3.6.10
 Homepage: http://adaxisoft.be
 
-Package: openmediavault-sabnzbdplus
+Package: openmediavault-sabnzbdplus-essencia
 Architecture: all
 Depends: openmediavault (>= 0.5.7), sabnzbdplus, par2, python-openssl, python-yenc, unrar, unzip
 Priority: optional
