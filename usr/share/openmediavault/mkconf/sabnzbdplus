@@ -74,7 +74,7 @@ PORT=${OMV_SABNZBDPLUS_PORT}
 EOF
 
 cat <<EOF > ${OMV_SABNZBDPLUS_NGINX_SITE}
-location /usenet/ {
+location /sabnzbd/ {
     proxy_pass http://localhost:8080/;
 }
 EOF

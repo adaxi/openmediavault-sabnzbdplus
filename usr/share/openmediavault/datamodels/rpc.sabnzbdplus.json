@@ -1,0 +1,13 @@
+[{
+	"type": "rpc",
+	"id": "rpc.sabnzbdplus.set",
+	"params": {
+		"type":"object",
+		"properties":{
+			"enable":{
+				"type":"boolean",
+				"required": "true"
+			}
+		}
+	}
+}]

@@ -18,93 +18,68 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenMediaVault. If not, see <http://www.gnu.org/licenses/>.
  */
-require_once("openmediavault/module.inc");
-require_once("openmediavault/config.inc");
-require_once("openmediavault/error.inc");
-require_once("openmediavault/initscript.inc");
-require_once("openmediavault/log.inc");
 
-class OMVModuleSabnzbdplus extends OMVModuleServiceAbstract
-  implements OMVINotifyListener, OMVIModuleServiceStatus {
+class OMVModuleSabnzbdplus extends \OMV\Engine\Module\ServiceAbstract
+  implements \OMV\Engine\Notify\IListener, \OMV\Engine\Module\IServiceStatus {
 	/**
 	 * Get the module name.
 	 */
 	public function getName() {
-		return "Sabnzbdplus";
+		return "sabnzbdplus";
 	}
 
 	/**
 	 * Generate the configuration.
-	 * @throw E_EXEC_FAILED
 	 */
 	public function applyConfig() {
-		$cmd = "omv-mkconf sabnzbdplus 2>&1";
-		if(0 !== $this->exec($cmd, $output)) {
-			throw new OMVException(OMVErrorMsg::E_EXEC_FAILED,
-			  $cmd, implode("\n", $output));
-		}
+		$cmd = new \OMV\System\Process("omv-mkconf", "sabnzbdplus");
+		$cmd->setRedirect2to1();
+		$cmd->execute();
 	}
 	
 	/**
 	 * Stop the managed service.
 	 */
 	public function stopService() {
-		$initd = new OMVSysVInitScript("sabnzbdplus", FALSE);
-		$initd->exec();
+		$systemCtl = new \OMV\System\SystemCtl("sabnzbdplus");
+		$systemCtl->disable(TRUE);
 	}
 	
 	/**
 	 * Start the managed service.
-	 * @throw E_CONFIG_GET_OBJECT_FAILED
 	 */
 	public function startService() {
-		global $xmlConfig;
-		$xpath = "//services/sabnzbdplus";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-					$xpath);
-		}
-		if(FALSE === boolval($object['enable']))
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sabnzbdplus");
+		if (TRUE !== $object->get("enable"))
 			return;
-		$initd = new OMVSysVInitScript("sabnzbdplus", TRUE);
-		$initd->exec();
+		$systemCtl = new \OMV\System\SystemCtl("sabnzbdplus");
+		$systemCtl->enable(TRUE);
 	}
 	
 	/**
 	 * Get the status of the managed service.
-	 * @throw E_CONFIG_GET_OBJECT_FAILED
 	 */
 	public function getStatus() {
-		global $xmlConfig;
-		$xpath = "//services/sabnzbdplus";
-		$object = $xmlConfig->get($xpath);
-		if(is_null($object)) {
-			throw new OMVException(OMVErrorMsg::E_CONFIG_GET_OBJECT_FAILED,
-					$xpath);
-		}
-		$initd = new OMVSysVInitScript("sabnzbdplus");
-		return array(
-				"name" => $this->getName(),
-				"title" => gettext("Sabnzbdplus"),
-				"enabled" => boolval($object['enable']),
-				"running" => ($initd->status() == 0)
-		);
+		$db = \OMV\Config\Database::getInstance();
+		$object = $db->get("conf.service.sabnzbdplus");
+		$systemCtl = new \OMV\System\SystemCtl("sabnzbdplus");
+		return [
+			"name" => $this->getName(),
+			"title" => gettext("Sabnzbdplus"),
+			"enabled" => $object->get("enable"),
+			"running" => $systemCtl->isActive()
+		];
 	}
 	
 
 	/**
 	 * Bind listeners.
 	 */
-	function bindListeners(OMVNotifyDispatcher $dispatcher) {
+	function bindListeners(\OMV\Engine\Notify\Dispatcher $dispatcher) {
 		$dispatcher->addListener(
 		  OMV_NOTIFY_MODIFY,
-		  "org.openmediavault.services.sabnzbdplus",
-		  array($this, "setDirty"));
+		  "org.openmediavault.conf.service.sabnzbdplus",
+		  [$this, "setDirty"]);
 	}
 }
-
-// Register module.
-$moduleMgr = &OMVModuleMgr::getInstance();
-$moduleMgr->registerModule(new OMVModuleSabnzbdplus());
-?>
